@@ -3,7 +3,7 @@ import "./index.css";
 import { h1Style } from "./styles";
 
 import { AutoHeightTextarea } from "./auto-height-textarea/AutoHeightTextarea";
-import { TagDisplay } from "./tag-suggestion/Tag";
+import { Demo } from "./tag-suggestion";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
       </section>
       <section>
         <h1 className={h1Style}>Tag</h1>
-        <TagDisplay tags={["a", "b", "c"]} onClickTag={() => {}} />
+        <Demo />
       </section>
     </div>
   );

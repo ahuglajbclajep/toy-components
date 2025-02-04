@@ -1,41 +1,24 @@
-import { useCallback } from "react";
+import clsx from "clsx/lite";
 
 import { Tag } from "./types";
 
 type TagProps = {
   tag: Tag;
   onClick: () => void;
+  isEditing?: boolean;
 };
 
-export const ColorTag = ({ tag, onClick }: TagProps) => {
+export const ColorTag = ({ tag, onClick, isEditing = false }: TagProps) => {
   return (
     <button
       onClick={onClick}
-      className="rounded-sm bg-blue-500 px-1 py-0.5 text-sm text-gray-100"
+      className={clsx(
+        "max-h-min rounded-sm bg-blue-500 px-1 py-0.5 text-sm text-gray-100",
+        "flex items-center gap-1",
+      )}
     >
-      #{tag}
+      <span>#{tag}</span>
+      {isEditing && <span>✖</span>}
     </button>
-  );
-};
-
-type TagDisplayProps = {
-  tags: Tag[];
-  onClickTag: (tag: Tag) => void;
-};
-
-export const TagDisplay = ({ tags, onClickTag }: TagDisplayProps) => {
-  const onClick = useCallback(
-    (tag: string) => () => {
-      onClickTag(tag);
-    },
-    [onClickTag],
-  );
-
-  return (
-    <div className="flex flex-wrap gap-1">
-      {tags.map((tag) => (
-        <ColorTag key={tag} tag={tag} onClick={onClick(tag)} />
-      ))}
-    </div>
   );
 };
