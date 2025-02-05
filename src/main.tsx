@@ -6,7 +6,7 @@ import { AutoHeightTextarea } from "./auto-height-textarea/AutoHeightTextarea";
 
 const App = () => {
   return (
-    <div className="flex h-full flex-col bg-gray-800 p-4">
+    <div className="flex h-full min-h-screen flex-col bg-gray-800 p-4">
       <h1 className={h1Style}>Auto-resizing textarea</h1>
       <AutoHeightTextarea />
     </div>

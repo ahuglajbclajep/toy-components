@@ -4,17 +4,16 @@ import clsx from "clsx/lite";
 
 type Props = {
   maxLength?: number;
-  minHeight?: number;
+  minHeight?: number; // 1行分の高さよりは小さくならない
 };
 
-export const AutoHeightTextarea = ({ maxLength, minHeight = 24 }: Props) => {
+export const AutoHeightTextarea = ({ maxLength, minHeight }: Props) => {
   const [content, setContent] = useState("");
   const ref = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-    console.log(minHeight);
-    ref.current.style.height = `${minHeight}px`; // 必須、これより小さくならない
+    ref.current.style.height = minHeight ? `${minHeight}px` : "auto";
     ref.current.style.height = `${ref.current.scrollHeight}px`;
   }, [content, minHeight]);
 
@@ -30,6 +29,7 @@ export const AutoHeightTextarea = ({ maxLength, minHeight = 24 }: Props) => {
   return (
     <textarea
       ref={ref}
+      rows={1}
       value={content}
       onChange={handleChange}
       className={clsx(
