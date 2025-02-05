@@ -4,7 +4,7 @@ import { Tag } from "./types";
 
 type TagProps = {
   tag: Tag;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   isEditing?: boolean;
 };
 

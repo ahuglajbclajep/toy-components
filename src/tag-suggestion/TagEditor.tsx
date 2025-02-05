@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useState, useCallback, useEffect, useRef, useId } from "react";
 import clsx from "clsx/lite";
 
 import { ColorTag } from "./Tag";
@@ -51,6 +51,17 @@ export default function TagEditor({
     }
   }, [inputMode]);
 
+  const containerId = useId();
+  useEffect(() => {
+    const listener = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest("#" + CSS.escape(containerId))) {
+        setInputMode("editable");
+      }
+    };
+    window.addEventListener("click", listener);
+    return () => window.removeEventListener("click", listener);
+  }, []);
+
   const searchInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (inputMode === "editing" && searchInputRef.current) {
@@ -59,10 +70,14 @@ export default function TagEditor({
   }, [inputMode]);
 
   const onClickInputTag_ = useCallback(
-    (tag: Tag) => () => {
-      onClickInputTag(tag);
+    (tag: Tag) => (e: React.MouseEvent) => {
+      if (inputMode === "editing") {
+        // NOTE: 自分自身が消えて closest の判定がおかしくなるのを、イベントの伝搬を止めることで防ぐ
+        e.stopPropagation();
+        onClickInputTag(tag);
+      }
     },
-    [onClickInputTag],
+    [inputMode, onClickInputTag],
   );
 
   const onChangeSearchText_ = useCallback(
@@ -74,6 +89,7 @@ export default function TagEditor({
 
   return (
     <div
+      id={containerId}
       onClick={onClickContainer}
       className={clsx(tagContainerStyle, inputStyle, "relative flex-grow p-1")}
     >
