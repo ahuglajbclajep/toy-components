@@ -88,38 +88,34 @@ export default function TagEditor({
   );
 
   return (
-    <div
-      id={containerId}
-      onClick={onClickContainer}
-      className={clsx(tagContainerStyle, inputStyle, "relative flex-grow p-1")}
-    >
-      {inputTags.map((tag) => (
-        <ColorTag
-          key={tag}
-          tag={tag}
-          isEditing={isEditing}
-          onClick={onClickInputTag_(tag)}
-        />
-      ))}
-      {isEditing && (
-        <input
-          ref={searchInputRef}
-          type="text"
-          value={searchText}
-          onChange={onChangeSearchText_}
-          className="flex-1 resize-none overflow-hidden border-none bg-transparent outline-none"
-        />
-      )}
-      {isEditing && (
-        <div
-          className={clsx(
-            "absolute left-0 top-full z-10 max-h-[50px] w-full overflow-y-scroll",
-            "rounded-md border border-gray-500 bg-gray-100 p-1",
-          )}
-        >
-          {children}
-        </div>
-      )}
+    // NOTE: children の領域が border 分ずれるのを防ぐため、relative を外側につける
+    <div className="relative">
+      <div
+        id={containerId}
+        onClick={onClickContainer}
+        className={clsx(tagContainerStyle, inputStyle, "p-1")}
+      >
+        {inputTags.map((tag) => (
+          <ColorTag
+            key={tag}
+            tag={tag}
+            isEditing={isEditing}
+            onClick={onClickInputTag_(tag)}
+          />
+        ))}
+        {isEditing && (
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={searchText}
+            onChange={onChangeSearchText_}
+            className="flex-1 resize-none overflow-hidden border-none bg-transparent outline-none"
+          />
+        )}
+        {isEditing && (
+          <div className="absolute left-0 top-full z-10 w-full">{children}</div>
+        )}
+      </div>
     </div>
   );
 }

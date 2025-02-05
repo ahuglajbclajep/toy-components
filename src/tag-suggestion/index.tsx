@@ -63,5 +63,13 @@ const Suggestion = ({
     setSuggestions(narrowDownedSuggestions);
   }, [searchText, filteredSuggestions]);
 
-  return <TagDisplay tags={suggestions} onClickTag={onClickTag} />;
+  if (!suggestions.length) {
+    return null;
+  }
+
+  return (
+    <div className="max-h-[60px] overflow-y-scroll rounded-md border border-t-0 border-gray-500 bg-gray-100 p-1">
+      <TagDisplay tags={suggestions} onClickTag={onClickTag} />
+    </div>
+  );
 };
