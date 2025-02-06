@@ -12,6 +12,7 @@ type Props = {
   searchText: string;
   onChangeSearchText: (text: string) => void;
   children: React.ReactNode;
+  placeholder?: string;
 };
 
 type InputMode = "editable" | "editing";
@@ -41,14 +42,18 @@ export default function TagEditor({
   searchText,
   onChangeSearchText,
   children,
+  placeholder,
 }: Props) {
   const [inputMode, setInputMode] = useState<InputMode>("editable");
   const isEditing = inputMode === "editing";
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const onClickContainer = useCallback(() => {
     if (inputMode === "editable") {
       setInputMode("editing");
+      return;
     }
+    searchInputRef.current?.focus();
   }, [inputMode]);
 
   const containerId = useId();
@@ -62,7 +67,6 @@ export default function TagEditor({
     return () => window.removeEventListener("click", listener);
   }, []);
 
-  const searchInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (inputMode === "editing" && searchInputRef.current) {
       searchInputRef.current.focus();
@@ -76,6 +80,7 @@ export default function TagEditor({
         e.stopPropagation();
         onClickInputTag(tag);
       }
+      searchInputRef.current?.focus();
     },
     [inputMode, onClickInputTag],
   );
@@ -95,6 +100,9 @@ export default function TagEditor({
         onClick={onClickContainer}
         className={clsx(tagContainerStyle, inputStyle, "p-1")}
       >
+        {!isEditing && !inputTags.length && (
+          <span className="h-6 text-base text-gray-500">{placeholder}</span>
+        )}
         {inputTags.map((tag) => (
           <ColorTag
             key={tag}
