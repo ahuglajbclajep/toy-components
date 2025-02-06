@@ -13,7 +13,7 @@ export const ColorTag = ({ tag, onClick, isEditing = false }: TagProps) => {
     <button
       onClick={onClick}
       className={clsx(
-        "max-h-min rounded-sm bg-blue-500 px-1 py-0.5 text-sm text-gray-100",
+        "h-6 rounded-sm bg-blue-500 px-1 py-0.5 text-sm text-gray-100",
         "flex items-center gap-1",
       )}
     >
