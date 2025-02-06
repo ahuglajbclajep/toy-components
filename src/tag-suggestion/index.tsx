@@ -4,10 +4,21 @@ import TagEditor, { narrowDownHelper } from "./TagEditor";
 import { TagDisplay } from "./TagDisplay";
 import { Tag } from "./types";
 
-const suggestTags = ["v", "w", "x", "y", "z"];
+const suggestTags = [
+  "Assembly",
+  "BASIC",
+  "C++",
+  "Dart",
+  "Elixir",
+  "F#",
+  "Go",
+  "Haskell",
+  "Idris",
+  "Java",
+];
 
 export const Demo = () => {
-  const [inputTags, setInputTags] = useState<Tag[]>(["a", "b", "c"]);
+  const [inputTags, setInputTags] = useState<Tag[]>(suggestTags.slice(0, 3));
   const [searchText, setSearchText] = useState("");
 
   const onClickInputTag = useCallback((tag: Tag) => {

@@ -17,7 +17,7 @@ export const ColorTag = ({ tag, onClick, isEditing = false }: TagProps) => {
         "flex items-center gap-1",
       )}
     >
-      <span>#{tag}</span>
+      <span># {tag}</span>
       {isEditing && <span>✖</span>}
     </button>
   );
