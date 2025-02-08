@@ -3,7 +3,7 @@ import "./index.css";
 import { h1Style } from "./styles";
 
 import { AutoHeightTextarea } from "./auto-height-textarea/AutoHeightTextarea";
-import { Demo } from "./tag-suggestion";
+import { TagSearchInput } from "./tag-suggestion";
 
 const App = () => {
   return (
@@ -13,8 +13,8 @@ const App = () => {
         <AutoHeightTextarea />
       </section>
       <section>
-        <h1 className={h1Style}>Tag</h1>
-        <Demo />
+        <h1 className={h1Style}>Tag search input</h1>
+        <TagSearchInput />
       </section>
     </div>
   );

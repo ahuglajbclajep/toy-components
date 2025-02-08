@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef, useId } from "react";
 import clsx from "clsx/lite";
 
-import { ColorTag } from "./Tag";
-import { tagContainerStyle } from "./TagDisplay";
+import { ColorTag, tagContainerStyle } from "./Tag";
 import { Tag } from "./types";
 import { inputStyle } from "../styles";
 
@@ -36,14 +35,14 @@ type InputMode = "editable" | "editing";
  *   />
  * </TagEditor>
  */
-export default function TagEditor({
+export const TagEditor = ({
   inputTags,
   onClickInputTag,
   searchText,
   onChangeSearchText,
   children,
   placeholder,
-}: Props) {
+}: Props) => {
   const [inputMode, setInputMode] = useState<InputMode>("editable");
   const isEditing = inputMode === "editing";
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -126,7 +125,7 @@ export default function TagEditor({
       </div>
     </div>
   );
-}
+};
 
 /**
  * @example

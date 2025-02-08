@@ -22,3 +22,5 @@ export const ColorTag = ({ tag, onClick, isEditing = false }: TagProps) => {
     </button>
   );
 };
+
+export const tagContainerStyle = clsx("flex flex-wrap items-center gap-1");
