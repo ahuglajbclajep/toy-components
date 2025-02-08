@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 
-import { TagEditor } from "../tag-suggestion/TagEditor";
-import { Suggestion } from "../tag-suggestion/Suggestion";
-import { Tag } from "../tag-suggestion/types";
+import { TagEditor } from "./TagEditor";
+import { Suggestion } from "./Suggestion";
+import { Tag } from "./types";
 
 const suggestTags = [
   "Assembly",

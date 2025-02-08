@@ -7,7 +7,7 @@ type Props = {
   minHeight?: number; // 1行分の高さよりは小さくならない
 };
 
-export const AutoHeightTextarea = ({ maxLength, minHeight }: Props) => {
+export const AutoResizingTextarea = ({ maxLength, minHeight }: Props) => {
   const [content, setContent] = useState("");
   const ref = useRef<HTMLTextAreaElement>(null);
 
