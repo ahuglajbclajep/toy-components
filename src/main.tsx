@@ -1,17 +1,19 @@
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router";
 import "./index.css";
 
+import { Layout } from "./Layout";
 import { Page } from "./Page";
 
 const App = () => {
-  const paths = Object.keys(import.meta.glob("./stories/*.tsx"));
-
   return (
-    <div className="h-full min-h-screen bg-gray-900 p-8">
-      {paths.map((path) => (
-        <Page key={path} path={path} />
-      ))}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route caseSensitive element={<Layout />}>
+          <Route path=":stories" element={<Page />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
