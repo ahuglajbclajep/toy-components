@@ -1,24 +1,22 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import clsx from "clsx/lite";
 
-type Props = {
-  path: string;
-};
+export const Page = () => {
+  const { stories } = useParams();
 
-export const Page = ({ path }: Props) => {
-  const stories = path.split(/[/.]/).slice(-2)[0];
   const { data } = usePromise<Record<string, () => React.JSX.Element>>(
     // NOTE: import(path) のように変数をそのまま渡すと vite の dynamic import の対象にならない
     import(`./stories/${stories}.tsx`),
   );
 
-  if (!data) {
+  if (!stories || !data) {
     return;
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className={h1Style}>{stories}</h1>
+      <h1 className={h1Style}>{camelToSentence(stories)}</h1>
       {Object.entries(data).map(([story, Component]) => (
         <section key={story} className="flex flex-col gap-4">
           <h2 className={h2Style}>{camelToSentence(story)}</h2>
@@ -28,6 +26,18 @@ export const Page = ({ path }: Props) => {
     </div>
   );
 };
+
+const h1Style = clsx("text-3xl font-bold text-gray-100");
+const h2Style = clsx("text-xl font-bold text-gray-100");
+
+/**
+ * @example
+ * camelToSentence("AutoResizingTextarea_") === "Auto resizing textarea"
+ */
+const camelToSentence = (input: string) =>
+  (input.match(/[A-Z][a-z]*/g) ?? [])
+    .map((w, i) => (i === 0 ? w : w.toLocaleLowerCase()))
+    .join(" ");
 
 const usePromise = <T,>(promise: Promise<T>) => {
   const [data, setData] = useState<T>();
@@ -42,15 +52,3 @@ const usePromise = <T,>(promise: Promise<T>) => {
     error,
   };
 };
-
-/**
- * @example
- * camelToSentence("AutoResizingTextarea_") === "Auto resizing textarea"
- */
-const camelToSentence = (input: string) =>
-  (input.match(/[A-Z][a-z]*/g) ?? [])
-    .map((w, i) => (i === 0 ? w : w.toLocaleLowerCase()))
-    .join(" ");
-
-const h1Style = clsx("text-3xl font-bold text-gray-100");
-const h2Style = clsx("text-xl font-bold text-gray-100");
