@@ -4,18 +4,18 @@ import clsx from "clsx/lite";
 
 type Props = {
   maxLength?: number;
-  minHeight?: number; // 1行分の高さよりは小さくならない
+  className?: string; // NOTE: min-height や max-height も効く
 };
 
-export const AutoResizingTextarea = ({ maxLength, minHeight }: Props) => {
+export const AutoResizingTextarea = ({ maxLength, className }: Props) => {
   const [content, setContent] = useState("");
   const ref = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-    ref.current.style.height = minHeight ? `${minHeight}px` : "auto";
+    ref.current.style.height = "auto";
     ref.current.style.height = `${ref.current.scrollHeight}px`;
-  }, [content, minHeight]);
+  }, [content]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -35,6 +35,7 @@ export const AutoResizingTextarea = ({ maxLength, minHeight }: Props) => {
       className={clsx(
         inputStyle,
         "box-content resize-none overflow-y-hidden break-words text-base",
+        className,
       )}
     />
   );
