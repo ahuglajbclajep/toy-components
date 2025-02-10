@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
-import { h1Style, h2Style } from "./styles";
-
 export const Page = () => {
   const { stories } = useParams();
 
@@ -17,10 +15,10 @@ export const Page = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className={h1Style}>{camelToSentence(stories)}</h1>
+      <h1 className="text-3xl font-bold">{camelToSentence(stories)}</h1>
       {Object.entries(data).map(([story, Component]) => (
         <section key={story} className="flex flex-col gap-4">
-          <h2 className={h2Style}>{camelToSentence(story)}</h2>
+          <h2 className="text-xl">{camelToSentence(story)}</h2>
           <Component />
         </section>
       ))}
