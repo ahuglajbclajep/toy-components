@@ -10,6 +10,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route caseSensitive element={<Layout />}>
+          <Route path="/" element={<Page />} />
           <Route path=":stories" element={<Page />} />
         </Route>
       </Routes>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import clsx from "clsx/lite";
+
+import { h1Style, h2Style } from "./styles";
 
 export const Page = () => {
   const { stories } = useParams();
@@ -26,9 +27,6 @@ export const Page = () => {
     </div>
   );
 };
-
-const h1Style = clsx("text-3xl font-bold text-gray-100");
-const h2Style = clsx("text-xl font-bold text-gray-100");
 
 /**
  * @example
