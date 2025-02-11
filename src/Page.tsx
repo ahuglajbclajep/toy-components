@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 export const Page = () => {
   const { stories } = useParams();
-
   const { data } = usePromise<Record<string, () => React.JSX.Element>>(
     // NOTE: import(path) のように変数をそのまま渡すと vite の dynamic import の対象にならない
     import(`./stories/${stories}.tsx`),
   );
 
+  const navigate = useNavigate();
   if (!stories || !data) {
+    navigate("/");
     return;
   }
 
