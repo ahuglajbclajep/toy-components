@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
+import clsx from "clsx/lite";
 
 import { ColorTag, tagContainerStyle } from "./Tag";
 import { narrowDownHelper } from "./TagEditor";
 import { Tag } from "./types";
+import { inputStyle } from "../styles";
 
 type Props = {
   suggestTags: Tag[];
@@ -36,7 +38,12 @@ export const Suggestion = ({
   }
 
   return (
-    <div className="max-h-[60px] overflow-y-scroll rounded-md border border-t-0 border-gray-300 bg-white p-1">
+    <div
+      className={clsx(
+        inputStyle,
+        "max-h-[60px] overflow-y-scroll border-t-0 focus-within:outline-0",
+      )}
+    >
       <TagDisplay tags={suggestions} onClickTag={onClickTag} />
     </div>
   );

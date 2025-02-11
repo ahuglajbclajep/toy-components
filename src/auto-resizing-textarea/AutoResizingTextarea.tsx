@@ -34,7 +34,7 @@ export const AutoResizingTextarea = ({ maxLength, className }: Props) => {
       onChange={handleChange}
       className={clsx(
         inputStyle,
-        "box-content resize-none overflow-y-hidden break-words text-base",
+        "resize-none overflow-y-hidden break-words text-base",
         className,
       )}
     />
