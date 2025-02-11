@@ -21,6 +21,6 @@
   // SEE: https://github.com/tailwindlabs/tailwindcss/discussions/7554
   "tailwindCSS.experimental.classRegex": [
     // e.g. const fooStyle = clsx("bar baz", cond ? "qux" : "quux");
-    ["Style\\s*=\\s*clsx\\(([^\\)]*)\\);", "['\"`]([^'\"`]*)['\"`]"]
+    ["clsx\\(([^\\)]*)\\);", "['\"`]([^'\"`]*)['\"`]"]
   ]
 }
