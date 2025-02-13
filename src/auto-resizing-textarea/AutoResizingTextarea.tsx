@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { inputStyle } from "../styles";
+import { inputStyle } from "../utils";
 import clsx from "clsx/lite";
 
 type Props = {
