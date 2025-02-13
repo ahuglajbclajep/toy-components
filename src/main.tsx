@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router";
+import { HashRouter, Routes, Route, Navigate } from "react-router";
 import "./index.css";
 
 import { Layout } from "./Layout";
@@ -8,7 +8,7 @@ import { Page } from "./Page";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route caseSensitive element={<Layout />}>
           <Route path="/" element={<Welcome />} />
@@ -16,7 +16,7 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
