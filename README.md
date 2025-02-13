@@ -1,87 +1,14 @@
-# my-react-template
+# toy-components
 
-A simple React and TypeScript template for VS Code.
+This application consists of the following two parts:
 
-```sh
-$ git clone -b template git@github.com:ahuglajbclajep/my-react-template.git REPOSITORY && cd $_
-$ npm i; npm run dev
+- `main.tsx` and `stories/`<br/>
+  A system that provides simple sample pages based on the filenames in `stories/`.
+  By writing `.tsx` files in a format similar to [Component Story Format](https://storybook.js.org/docs/api/csf) (note: not compatible), you can easily create a component catalog.
+- Components displayed in `stories/` (e.g. `AutoResizingTextarea.tsx`)<br/>
+  A proof of concept (PoC) for slightly complex React components.
+  Includes components implemented in other repositories.
 
-$ git branch -m main
-$ git remote set-url origin git@github.com:OWNER/REPOSITORY.git
-```
+# License
 
-## Additional Configuration
-
-<details>
-<summary>Using with clsx & prettier-plugin-tailwindcss</summary><br>
-
-See also:
-
-- <https://github.com/lukeed/clsx?tab=readme-ov-file#tailwind-support>
-- <https://github.com/tailwindlabs/prettier-plugin-tailwindcss>
-- <https://github.com/tailwindlabs/tailwindcss/discussions/7554>
-
-```sh
-$ npm i clsx
-$ npm i -D prettier-plugin-tailwindcss
-```
-
-[.vscode/settings.json](.vscode/settings.json)
-
-```diff
-{
-  "tailwindCSS.experimental.classRegex": [
--   // e.g. const fooStyle = "bar";
--   "Style\\s*=\\s*['\"`]([^'\"`]*)['\"`];"
-+   // e.g. const fooStyle = clsx("bar baz", cond ? "qux" : "quux");
-+   ["Style\\s*=\\s*clsx\\(([^\\)]*)\\);", "['\"`]([^'\"`]*)['\"`]"]
-  ]
-}
-```
-
-.prettierrc.mjs
-
-```js
-/**
- * @type {import("prettier").Config}
- */
-const config = {
-  plugins: ["prettier-plugin-tailwindcss"],
-  tailwindFunctions: ["clsx"],
-};
-
-export default config;
-```
-
-[package.json](package.json)
-
-```diff
-{
-- "prettier": {}
-}
-```
-
-</details>
-
-<details>
-<summary>Using with gh-pages</summary><br>
-
-See also:
-
-```sh
-$ npm i -D gh-pages
-```
-
-[package.json](package.json)
-
-```diff
-{
-  "scripts": {
-    "preview": "vite preview",
-+   "deploy": "npm run build && gh-pages -d dist",
-    "lint:type": "tsc",
-  }
-}
-```
-
-</details>
+MIT
