@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef, useId } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import clsx from "clsx/lite";
 
 import { ColorTag, tagContainerStyle } from "./Tag";
@@ -55,15 +55,10 @@ export const TagEditor = ({
     searchInputRef.current?.focus();
   }, [inputMode]);
 
-  const containerId = useId();
-  useEffect(() => {
-    const listener = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest("#" + CSS.escape(containerId))) {
-        setInputMode("editable");
-      }
-    };
-    window.addEventListener("click", listener);
-    return () => window.removeEventListener("click", listener);
+  const onBlur = useCallback((e: React.FocusEvent<HTMLElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setInputMode("editable");
+    }
   }, []);
 
   useEffect(() => {
@@ -73,10 +68,8 @@ export const TagEditor = ({
   }, [inputMode]);
 
   const onClickInputTag_ = useCallback(
-    (tag: Tag) => (e: React.MouseEvent) => {
+    (tag: Tag) => () => {
       if (inputMode === "editing") {
-        // NOTE: 自分自身が消えて closest の判定がおかしくなるのを、イベントの伝搬を止めることで防ぐ
-        e.stopPropagation();
         onClickInputTag(tag);
       }
       searchInputRef.current?.focus();
@@ -95,8 +88,8 @@ export const TagEditor = ({
     // NOTE: children の領域が border 分ずれるのを防ぐため、relative を外側につける
     <div className="relative">
       <div
-        id={containerId}
         onClick={onClickContainer}
+        onBlur={onBlur}
         className={clsx(tagContainerStyle, inputStyle, "p-1")}
       >
         {!isEditing && !inputTags.length && (
@@ -114,6 +107,8 @@ export const TagEditor = ({
           <input
             ref={searchInputRef}
             type="text"
+            // NOTE: tabindex を明示的に指定しないと、Chrome 以外では e.relatedTarget が空になる
+            tabIndex={0}
             value={searchText}
             onChange={onChangeSearchText_}
             className="flex-1 resize-none overflow-hidden border-none bg-transparent outline-none"

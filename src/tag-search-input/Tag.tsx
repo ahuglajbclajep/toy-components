@@ -4,13 +4,15 @@ import { Tag } from "./types";
 
 type TagProps = {
   tag: Tag;
-  onClick: (e: React.MouseEvent) => void;
+  onClick: () => void;
   isEditing?: boolean;
 };
 
 export const ColorTag = ({ tag, onClick, isEditing = false }: TagProps) => {
   return (
     <button
+      // NOTE: tabindex を明示的に指定しないと、Chrome 以外では e.relatedTarget が空になる
+      tabIndex={0}
       onClick={onClick}
       className={clsx(
         "h-6 rounded-md bg-blue-500 px-1.5 py-0.5 text-sm text-white",
