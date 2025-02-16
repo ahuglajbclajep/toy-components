@@ -5,7 +5,7 @@ export const inputStyle = clsx(
   "rounded-md border border-gray-300 bg-white p-2 outline-none focus-within:outline-blue-300",
 );
 
-export const iframeStyle = clsx("border border-neutral-300");
+export const iframeStyle = clsx("w-full border border-neutral-300");
 
 export const usePromise = <T>(promise: Promise<T>) => {
   const [data, setData] = useState<T>();

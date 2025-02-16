@@ -13,7 +13,7 @@ export const Layout = () => {
   return (
     <div className="bg-neutral-50 font-sans text-neutral-700">
       <div className="mx-auto flex h-full min-h-screen max-w-screen-lg gap-4 p-8">
-        <aside className="flex w-40 flex-col gap-4">
+        <aside className="flex w-16 flex-col gap-4 md:w-40">
           <Link to="/" className={linkStyle(!stories)}>
             Welcome
           </Link>
@@ -23,7 +23,7 @@ export const Layout = () => {
             </Link>
           ))}
         </aside>
-        <main className="flex-1">
+        <main className="flex-1 break-all">
           <Outlet />
         </main>
       </div>
@@ -33,6 +33,6 @@ export const Layout = () => {
 
 const linkStyle = (selected: boolean) =>
   clsx(
-    "rounded-md p-2 text-xl hover:bg-neutral-200",
+    "truncate rounded-md p-2 text-xl hover:bg-neutral-200",
     selected && "bg-neutral-200",
   );
