@@ -22,11 +22,16 @@ export const Layout = () => {
         <details
           ref={detailsRef}
           className={clsx(
-            "group -mx-4 rounded-md border p-4",
+            "group -mx-4 rounded-md border border-neutral-300 p-4",
             "sm:mx-0 sm:w-40 sm:border-none sm:p-0",
           )}
         >
-          <summary className="flex list-none justify-between text-xl group-open:mb-4 sm:hidden">
+          <summary
+            className={clsx(
+              "flex list-none justify-between text-xl group-open:mb-4 sm:hidden",
+              "[&::-webkit-details-marker]:hidden", // for Safari
+            )}
+          >
             Navigation
             <span className="transition group-open:rotate-180">▽</span>
           </summary>
