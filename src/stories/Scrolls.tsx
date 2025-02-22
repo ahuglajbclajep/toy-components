@@ -4,7 +4,7 @@ export const BidirectionalEndlessScrolling = () => {
   return (
     <iframe
       src="https://ahuglajbclajep.github.io/react-bi-directional-endless-scrolling/"
-      height={800}
+      height={754}
       className={iframeStyle}
     />
   );
