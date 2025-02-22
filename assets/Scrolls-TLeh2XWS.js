@@ -1,1 +1,0 @@
-import{j as e,a as i}from"./index-Bvy__fro.js";const r=()=>e.jsx("iframe",{src:"https://ahuglajbclajep.github.io/react-bi-directional-endless-scrolling/",height:800,className:i});export{r as BidirectionalEndlessScrolling};
