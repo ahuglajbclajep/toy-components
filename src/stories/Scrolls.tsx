@@ -1,11 +1,10 @@
-import { iframeStyle } from "../utils";
+import { ExpandableIFrame } from "../ExpandableIFrame";
 
 export const BidirectionalEndlessScrolling = () => {
   return (
-    <iframe
+    <ExpandableIFrame
       src="https://ahuglajbclajep.github.io/react-bi-directional-endless-scrolling/"
-      height={754}
-      className={iframeStyle}
+      defaultHeight={754}
     />
   );
 };

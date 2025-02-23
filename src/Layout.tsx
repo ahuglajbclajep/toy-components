@@ -2,6 +2,8 @@ import { useMemo, useRef, useEffect } from "react";
 import { Outlet, Link, useParams, useLocation } from "react-router";
 import clsx from "clsx/lite";
 
+import { iconLikeStyle } from "./utils";
+
 export const Layout = () => {
   const paths = useMemo(() => {
     const filePaths = Object.keys(import.meta.glob("./stories/*.tsx"));
@@ -28,12 +30,19 @@ export const Layout = () => {
         >
           <summary
             className={clsx(
-              "flex list-none justify-between text-xl group-open:mb-4 sm:hidden",
+              "flex list-none items-center justify-between text-xl group-open:mb-4 sm:hidden",
               "[&::-webkit-details-marker]:hidden", // for Safari
             )}
           >
             Navigation
-            <span className="transition group-open:rotate-180">▽</span>
+            <span
+              className={clsx(
+                iconLikeStyle,
+                "transition group-open:rotate-180",
+              )}
+            >
+              ▽
+            </span>
           </summary>
           <nav className="flex flex-col gap-4">
             <Link to="/" className={linkStyle(!stories)}>

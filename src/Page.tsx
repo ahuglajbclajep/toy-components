@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router";
+
 import { usePromise, camelToSentence } from "./utils";
 
 export const Page = () => {
