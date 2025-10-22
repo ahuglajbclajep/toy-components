@@ -1,18 +1,28 @@
 import { useParams, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
 
-import { usePromise, camelToSentence } from "./utils";
+import { camelToSentence } from "./utils";
 
 export const Page = () => {
-  const { stories } = useParams();
-  const { data } = usePromise<Record<string, () => React.JSX.Element>>(
-    // NOTE: import(path) のように変数をそのまま渡すと vite の dynamic import の対象にならない
-    import(`./stories/${stories}.tsx`),
-  );
+  const stories = useParams().stories!;
+
+  type ImportResult = Record<string, () => React.JSX.Element> | Error;
+  const [result, setResult] = useState<ImportResult | null>(null);
+  useEffect(() => {
+    import(`./stories/${stories}.tsx`)
+      .then(setResult)
+      .catch(() => setResult(Error(`Story module not found: ${stories}`)));
+  }, [stories]);
 
   const navigate = useNavigate();
-  if (!stories || !data) {
-    navigate("/");
-    return;
+  useEffect(() => {
+    if (result instanceof Error) {
+      navigate("/", { replace: true });
+    }
+  }, [result]);
+
+  if (!result || result instanceof Error) {
+    return null;
   }
 
   return (
@@ -21,7 +31,7 @@ export const Page = () => {
         <h1 className="text-3xl font-bold">{camelToSentence(stories)}</h1>
         <SourcePath stories={stories} />
       </section>
-      {Object.entries(data).map(([story, Component]) => (
+      {Object.entries(result).map(([story, Component]) => (
         <section key={story} className="flex flex-col gap-4">
           <h2 className="text-xl">{camelToSentence(story)}</h2>
           <Component />

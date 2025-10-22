@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import clsx from "clsx/lite";
 
 export const inputStyle = clsx(
@@ -8,20 +7,6 @@ export const inputStyle = clsx(
 export const iconLikeStyle = clsx(
   "flex size-6 items-center justify-center text-sm font-bold",
 );
-
-export const usePromise = <T>(promise: Promise<T>) => {
-  const [data, setData] = useState<T>();
-  const [error, setError] = useState<unknown>();
-
-  useEffect(() => {
-    promise.then((result) => setData(result)).catch((err) => setError(err));
-  }, [promise]);
-
-  return {
-    data,
-    error,
-  };
-};
 
 /**
  * @example
