@@ -17,7 +17,7 @@ export const Layout = () => {
     <div className="bg-neutral-50 font-sans text-neutral-700">
       <div
         className={clsx(
-          "mx-auto h-full min-h-screen max-w-screen-lg p-8",
+          "mx-auto h-full min-h-screen max-w-(--breakpoint-lg) p-8",
           "flex flex-col gap-4 sm:flex-row",
         )}
       >
@@ -59,7 +59,7 @@ export const Layout = () => {
             ))}
           </nav>
         </details>
-        <main className="flex-1 break-words">
+        <main className="flex-1 wrap-break-word">
           <Outlet />
         </main>
       </div>
