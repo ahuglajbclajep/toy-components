@@ -115,7 +115,7 @@ export const TagEditor = ({
           />
         )}
         {isEditing && (
-          <div className="absolute left-0 top-full z-10 w-full">{children}</div>
+          <div className="absolute top-full left-0 z-10 w-full">{children}</div>
         )}
       </div>
     </div>

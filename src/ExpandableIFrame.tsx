@@ -20,7 +20,7 @@ export const ExpandableIFrame = ({ src, defaultHeight }: Props) => {
     <div
       className={clsx(
         "w-full border border-neutral-300 bg-white",
-        expand && "fixed left-0 top-0 border-none",
+        expand && "fixed top-0 left-0 border-none",
       )}
     >
       <div className="relative">
@@ -32,7 +32,7 @@ export const ExpandableIFrame = ({ src, defaultHeight }: Props) => {
         <button
           className={clsx(
             iconLikeStyle,
-            "absolute right-0 top-0 rounded-bl-md bg-neutral-200",
+            "absolute top-0 right-0 cursor-pointer rounded-bl-md bg-neutral-200",
           )}
           onClick={onClick}
         >

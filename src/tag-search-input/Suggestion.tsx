@@ -41,7 +41,7 @@ export const Suggestion = ({
     <div
       className={clsx(
         inputStyle,
-        "max-h-[60px] overflow-y-scroll border-t-0 focus-within:outline-0",
+        "max-h-[60px] cursor-default! overflow-y-scroll border-t-0 focus-within:outline-0",
       )}
     >
       <TagDisplay tags={suggestions} onClickTag={onClickTag} />

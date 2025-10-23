@@ -15,7 +15,7 @@ export const ColorTag = ({ tag, onClick, isEditing = false }: TagProps) => {
       tabIndex={0}
       onClick={onClick}
       className={clsx(
-        "h-6 rounded-md bg-blue-500 px-1.5 py-0.5 text-sm text-white",
+        "h-6 cursor-pointer rounded-md bg-blue-500 px-1.5 py-0.5 text-sm text-white",
         "flex items-center gap-1",
       )}
     >
