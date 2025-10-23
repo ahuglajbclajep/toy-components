@@ -14,9 +14,11 @@ export const RecentUserIcons = ({ users }: Props) => {
       {recentUsers.map((user) => (
         <img
           key={user.id}
-          // NOTE: -ml-6 と last:ml-0 で、フクロウセレクタと同じことをやっている（-space-x-6 は厳密にはフクロウセレクタと定義が違うので使えない）
-          // NOTE: 24px は、アイコン同士の画像の重なり 16px と、お互いの border-x-4 を足した長さ
-          className={clsx(userIconStyle, "z-10 -ml-6 last:ml-0")}
+          // NOTE: -ml-12 と last:ml-0 で、フクロウセレクタと同じことをする（-space-x-12 は厳密にはフクロウセレクタと定義が違うので使えない）
+          className={clsx(
+            userIconStyle,
+            "z-10 -ml-12 cursor-pointer transition-all last:ml-0 hover:z-20 hover:not-last:-ml-6",
+          )}
           src={user.url}
         />
       ))}
