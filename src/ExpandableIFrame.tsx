@@ -28,6 +28,7 @@ export const ExpandableIFrame = ({ src, defaultHeight }: Props) => {
           src={src}
           height={expand ? window.innerHeight : defaultHeight}
           className="w-full"
+          loading="lazy"
         />
         <button
           className={clsx(
