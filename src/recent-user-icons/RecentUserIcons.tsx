@@ -35,5 +35,5 @@ const DummyIcons = () => (
 );
 
 const userIconStyle = clsx(
-  "box-content size-24 rounded-full border-x-4 border-white bg-gray-300 object-cover",
+  "box-content size-24 rounded-full border-4 border-white bg-gray-300 object-cover",
 );

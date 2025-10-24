@@ -2,6 +2,7 @@ export const Welcome = () => {
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-3xl font-bold">Welcome!</h1>
+      <p>A simple component catalog system using Vite (with samples).</p>
       <article>
         <p>This application consists of the following two parts:</p>
         <ul className="list-disc space-y-4 p-4">
@@ -39,13 +40,13 @@ export const Welcome = () => {
             </p>
           </li>
         </ul>
-        <p>
-          GitHub 🐙:{" "}
-          <ExLink href="https://github.com/ahuglajbclajep/toy-components">
-            ahuglajbclajep/toy-components
-          </ExLink>
-        </p>
       </article>
+      <p>
+        GitHub 🐙:{" "}
+        <ExLink href="https://github.com/ahuglajbclajep/toy-components">
+          ahuglajbclajep/toy-components
+        </ExLink>
+      </p>
     </section>
   );
 };
