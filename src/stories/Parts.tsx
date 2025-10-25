@@ -4,5 +4,9 @@ import { RecentUserIcons } from "../recent-user-icons/RecentUserIcons";
 
 export const RecentUserIcons_ = () => {
   const data = useCatApi();
-  return <RecentUserIcons users={data} />;
+  return (
+    <div className="no-scrollbar overflow-scroll">
+      <RecentUserIcons users={data} />
+    </div>
+  );
 };
