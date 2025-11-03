@@ -4,7 +4,7 @@ import clsx from "clsx/lite";
 import { ColorTag, tagContainerStyle } from "./Tag";
 import { narrowDownHelper } from "./TagEditor";
 import { Tag } from "./types";
-import { inputStyle } from "../utils";
+import { inputStyle } from "../../utils";
 
 type Props = {
   suggestTags: Tag[];

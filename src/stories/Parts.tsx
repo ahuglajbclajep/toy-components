@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { useCatApi } from "./hooks";
 
-import { RecentUserIcons } from "../recent-user-icons/RecentUserIcons";
+import { RecentUserIcons } from "../components/RecentUserIcons";
 import { useTwitter, useIsEmbedRendered } from "../hooks/useTwitter";
 
 export const RecentUserIcons_ = () => {

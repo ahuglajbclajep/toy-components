@@ -3,7 +3,7 @@ import clsx from "clsx/lite";
 
 import { ColorTag, tagContainerStyle } from "./Tag";
 import { Tag } from "./types";
-import { inputStyle } from "../utils";
+import { inputStyle } from "../../utils";
 
 type Props = {
   inputTags: Tag[];

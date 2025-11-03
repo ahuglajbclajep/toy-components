@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
 
-import { AutoResizingTextarea } from "../auto-resizing-textarea/AutoResizingTextarea";
+import { AutoResizingTextarea } from "../components/AutoResizingTextarea";
 
-import { TagEditor } from "../tag-search-input/TagEditor";
-import { Suggestion } from "../tag-search-input/Suggestion";
-import { Tag } from "../tag-search-input/types";
+import { TagEditor } from "../components/tag-search-input/TagEditor";
+import { Suggestion } from "../components/tag-search-input/Suggestion";
+import { Tag } from "../components/tag-search-input/types";
 
 export const AutoResizingTextarea_ = () => {
   return <AutoResizingTextarea />;
