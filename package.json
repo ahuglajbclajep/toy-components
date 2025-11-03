@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.1.15",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@types/twitter-for-web": "^0.0.6",
     "@vitejs/plugin-react": "^5.0.4",
     "gh-pages": "^6.3.0",
     "prettier": "^3.6.2",
