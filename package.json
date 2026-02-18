@@ -6,7 +6,7 @@
     "dev": "vite --open",
     "build": "tsc -b && vite build",
     "preview": "vite preview --open",
-    "deploy": "npm run build && gh-pages -f -d dist",
+    "deploy": "npm run build && gh-pages -d dist -v '.*' -f",
     "lint:type": "tsc",
     "lint:format": "prettier . -c --cache"
   },
