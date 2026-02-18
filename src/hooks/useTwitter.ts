@@ -1,10 +1,55 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useBooleanState } from "./useBooleanState";
 
 /**
- * 必要なら twitter の widgets.js をロードし、window.twttr を返すフック
+ * X の widgets.js のロードを管理するクラス
+ * script タグが複数作られたり、アンマウント後にコールバックが呼ばれるのを防ぐ
  *
+ * @see https://docs.x.com/x-for-websites/javascript-api/guides/set-up-x-for-websites
+ */
+class TwttrLoader {
+  private static twttrPromise: Promise<Twitter> | undefined;
+
+  /**
+   * Promise が解決済みなら、解決済みの値への同期的なアクセスを許すためのプロパティ
+   */
+  public static resolvedTwttr: Awaited<typeof TwttrLoader.twttrPromise>;
+
+  private destroyed: boolean = false;
+
+  public load(onSuccess: (twttr: Twitter) => void) {
+    // Promise が空だったら作っておく
+    if (!TwttrLoader.twttrPromise) {
+      TwttrLoader.twttrPromise = new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://platform.x.com/widgets.js";
+        script.async = true;
+        script.onload = () => {
+          window.twttr.ready((twttr) => {
+            TwttrLoader.resolvedTwttr = twttr;
+            resolve(twttr);
+          });
+        };
+        document.body.appendChild(script);
+      });
+    }
+
+    // 共有の Promise にコールバックを登録して、解決がブロードキャストされるようにする
+    // ただし、destroy() されたインスタンスではコールバックを呼ばない
+    void TwttrLoader.twttrPromise.then((twttr) => {
+      if (!this.destroyed) {
+        onSuccess(twttr);
+      }
+    });
+  }
+
+  public destroy() {
+    this.destroyed = true;
+  }
+}
+
+/**
  * @example
  * const twttr = useTwitter()
  * useEffect(() => {
@@ -16,26 +61,20 @@ import { useBooleanState } from "./useBooleanState";
  * useEffect(() => {
  *   ref.current && twttr?.widgets.createTweet("id", ref.current)
  * }, [twttr])
- *
- * @see https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites
  */
 export const useTwitter = () => {
-  const [isLoaded, setIsLoaded] = useBooleanState(!!window.twttr);
-  const twttr = useMemo(
-    () => (isLoaded ? (window.twttr as Twitter) : undefined),
-    [isLoaded],
-  );
+  // 初期値が取得できるときは取得することで、描画までのタイミングを短縮できる
+  const [twttr, setTwttr] = useState(TwttrLoader.resolvedTwttr);
 
   useEffect(() => {
-    if (!isLoaded) {
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = "https://platform.twitter.com/widgets.js";
-      script.addEventListener("load", () => window.twttr.ready(setIsLoaded));
-      document.body.appendChild(script);
-      return () => void document.body.removeChild(script);
+    if (twttr) {
+      return;
     }
-  }, [isLoaded, setIsLoaded]);
+
+    const loader = new TwttrLoader();
+    loader.load(setTwttr);
+    return () => loader.destroy();
+  }, [twttr]);
 
   return twttr;
 };
