@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 import { AutoResizingTextarea } from "../components/AutoResizingTextarea";
 
@@ -6,7 +6,7 @@ import { TagEditor } from "../components/tag-search-input/TagEditor";
 import { Suggestion } from "../components/tag-search-input/Suggestion";
 import { Tag } from "../components/tag-search-input/types";
 
-import { useForm, FormContext, useFormRegister } from "../hooks/formStore";
+import { FormStore, FormContext, useFormRegister } from "../hooks/formStore";
 import { inputStyle } from "../utils";
 
 export const AutoResizingTextarea_ = () => {
@@ -56,14 +56,14 @@ export const TagSearchInput = () => {
   );
 };
 
-export const FormStore = () => {
-  const { register, getValues } = useForm();
+export const FormStore_ = () => {
+  const store = useMemo(() => new FormStore(), []);
   const onSubmit = useCallback(() => {
-    console.log(getValues());
-  }, [getValues]);
+    console.log(store.getValues());
+  }, [store]);
 
   return (
-    <FormContext value={register}>
+    <FormContext value={store}>
       <div className="flex gap-2">
         <FormStoreInner />
         <button onClick={onSubmit}>Submit</button>
@@ -73,16 +73,16 @@ export const FormStore = () => {
 };
 
 const FormStoreInner = () => {
-  const registerRef = useFormRegister();
+  const { register } = useFormRegister();
   return (
     <>
       <input
         type="text"
         className={inputStyle}
         placeholder="Nickname"
-        ref={registerRef("nickname")}
+        ref={register("nickname")}
       />
-      <select className={inputStyle} ref={registerRef("gender")}>
+      <select className={inputStyle} ref={register("gender")}>
         <option value="" disabled selected>
           Gender
         </option>
