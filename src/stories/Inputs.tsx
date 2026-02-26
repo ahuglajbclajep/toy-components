@@ -6,7 +6,7 @@ import { TagEditor } from "../components/tag-search-input/TagEditor";
 import { Suggestion } from "../components/tag-search-input/Suggestion";
 import { Tag } from "../components/tag-search-input/types";
 
-import { FormStore, FormContext, useFormRegister } from "../hooks/formStore";
+import { FormStore, createFormStore } from "../hooks/formStore";
 import { inputStyle } from "../utils";
 
 export const AutoResizingTextarea_ = () => {
@@ -56,26 +56,42 @@ export const TagSearchInput = () => {
   );
 };
 
-export const FormStore_ = () => {
-  const store = useMemo(() => new FormStore(), []);
-  const onSubmit = useCallback(() => {
-    console.log(store.getValues());
-  }, [store]);
+type ExampleFormData = {
+  nickname: string;
+  gender: string;
+};
 
+class ExampleFormStore extends FormStore<
+  ExampleFormData,
+  keyof ExampleFormData,
+  HTMLInputElement | HTMLSelectElement
+> {
+  getValues() {
+    return {
+      nickname: this.fields.get("nickname")?.value ?? "",
+      gender: this.fields.get("gender")?.value ?? "",
+    };
+  }
+}
+const { FormProvider, useForm, useField } = createFormStore(ExampleFormStore);
+
+export const FormStore_ = () => {
   return (
-    <FormContext value={store}>
-      <div className="flex gap-2">
-        <FormStoreInner />
-        <button onClick={onSubmit}>Submit</button>
-      </div>
-    </FormContext>
+    <FormProvider>
+      <FormStoreInner />
+    </FormProvider>
   );
 };
 
 const FormStoreInner = () => {
-  const { register } = useFormRegister();
+  const getValues = useForm();
+  const onSubmit = useCallback(() => {
+    console.log(getValues());
+  }, [getValues]);
+
+  const register = useField();
   return (
-    <>
+    <div className="flex gap-2">
       <input
         type="text"
         className={inputStyle}
@@ -90,6 +106,7 @@ const FormStoreInner = () => {
         <option value="female">Female</option>
         <option value="unspecified">Unspecified</option>
       </select>
-    </>
+      <button onClick={onSubmit}>Submit</button>
+    </div>
   );
 };
