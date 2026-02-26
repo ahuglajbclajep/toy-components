@@ -6,6 +6,9 @@ import { TagEditor } from "../components/tag-search-input/TagEditor";
 import { Suggestion } from "../components/tag-search-input/Suggestion";
 import { Tag } from "../components/tag-search-input/types";
 
+import { useForm, FormContext, useFormRegister } from "../hooks/formStore";
+import { inputStyle } from "../utils";
+
 export const AutoResizingTextarea_ = () => {
   return <AutoResizingTextarea />;
 };
@@ -50,5 +53,43 @@ export const TagSearchInput = () => {
         onClickTag={onClickSuggestTag}
       />
     </TagEditor>
+  );
+};
+
+export const FormStore = () => {
+  const { register, getValues } = useForm();
+  const onSubmit = useCallback(() => {
+    console.log(getValues());
+  }, [getValues]);
+
+  return (
+    <FormContext value={register}>
+      <div className="flex gap-2">
+        <FormStoreInner />
+        <button onClick={onSubmit}>Submit</button>
+      </div>
+    </FormContext>
+  );
+};
+
+const FormStoreInner = () => {
+  const registerRef = useFormRegister();
+  return (
+    <>
+      <input
+        type="text"
+        className={inputStyle}
+        placeholder="Nickname"
+        ref={registerRef("nickname")}
+      />
+      <select className={inputStyle} ref={registerRef("gender")}>
+        <option value="" disabled selected>
+          Gender
+        </option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="unspecified">Unspecified</option>
+      </select>
+    </>
   );
 };
