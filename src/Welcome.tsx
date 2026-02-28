@@ -52,7 +52,7 @@ export const Welcome = () => {
 };
 
 const Code = ({ children }: { children: string }) => (
-  <code className="rounded-xs bg-neutral-100 px-0.5">{children}</code>
+  <code className="rounded-xs bg-bg-muted px-0.5">{children}</code>
 );
 
 const ExLink = ({

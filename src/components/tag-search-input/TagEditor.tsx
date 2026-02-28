@@ -93,7 +93,7 @@ export const TagEditor = ({
         className={clsx(tagContainerStyle, inputStyle, "p-1")}
       >
         {!isEditing && !inputTags.length && (
-          <span className="h-6 text-base text-gray-500">{placeholder}</span>
+          <span className="h-6 text-base text-text-muted">{placeholder}</span>
         )}
         {inputTags.map((tag) => (
           <ColorTag

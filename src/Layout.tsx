@@ -14,7 +14,7 @@ export const Layout = () => {
   const detailsRef = useNavigationMenu();
 
   return (
-    <div className="bg-neutral-50 font-sans text-neutral-700">
+    <div className="bg-bg font-sans text-text">
       <div
         className={clsx(
           "mx-auto h-full min-h-screen max-w-(--breakpoint-lg) p-8",
@@ -24,7 +24,7 @@ export const Layout = () => {
         <details
           ref={detailsRef}
           className={clsx(
-            "group -mx-4 rounded-md border border-neutral-300 p-4",
+            "group -mx-4 rounded-md border border-border p-4",
             "sm:mx-0 sm:w-40 sm:border-none sm:p-0",
           )}
         >
@@ -101,6 +101,6 @@ const useNavigationMenu = () => {
 
 const linkStyle = (selected: boolean) =>
   clsx(
-    "truncate rounded-md p-2 text-xl hover:bg-neutral-200",
-    selected && "bg-neutral-200",
+    "truncate rounded-md p-2 text-xl hover:bg-bg-emphasis",
+    selected && "bg-bg-emphasis",
   );

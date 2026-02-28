@@ -1,7 +1,7 @@
 import clsx from "clsx/lite";
 
 export const inputStyle = clsx(
-  "cursor-text rounded-md border border-gray-300 bg-white p-2 outline-none focus-within:outline-blue-300",
+  "cursor-text rounded-md border border-border bg-bg-white p-2 outline-0 focus-within:outline focus-within:outline-focus",
 );
 
 export const iconLikeStyle = clsx(

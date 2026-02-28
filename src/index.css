@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg: var(--color-neutral-50);
+  --color-bg-white: var(--color-white);
+  --color-bg-emphasis: var(--color-neutral-200);
+  --color-bg-muted: var(--color-neutral-100);
+  --color-text: var(--color-gray-800);
+  --color-text-emphasis: var(--color-gray-900);
+  --color-text-muted: var(--color-gray-500);
+  --color-border: var(--color-gray-300);
+  --color-border-muted: var(--color-white);
+  --color-focus: var(--color-blue-300);
+
+  --color-bg-brand: var(--color-blue-500);
+  --color-text-onbrand: var(--color-white);
+}
+
 @utility no-scrollbar {
   /* Chrome & Safari */
   &::-webkit-scrollbar {
