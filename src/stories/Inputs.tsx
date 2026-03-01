@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
+import clsx from "clsx/lite";
 
 import { AutoResizingTextarea } from "../components/AutoResizingTextarea";
 
@@ -7,24 +8,13 @@ import { Suggestion } from "../components/tag-search-input/Suggestion";
 import { Tag } from "../components/tag-search-input/types";
 
 import { FormStore, createFormStore } from "../hooks/formStore";
-import { inputStyle } from "../utils";
+import { textInputStyle, buttonStyle } from "../utils";
 
 export const AutoResizingTextarea_ = () => {
   return <AutoResizingTextarea />;
 };
 
-const suggestTags = [
-  "Assembly",
-  "BASIC",
-  "C++",
-  "Dart",
-  "Elixir",
-  "F#",
-  "Go",
-  "Haskell",
-  "Idris",
-  "Java",
-];
+const suggestTags = ["Assembly", "BASIC", "C++", "Dart", "Elixir", "F#", "Go"];
 
 export const TagSearchInput = () => {
   const [inputTags, setInputTags] = useState<Tag[]>(suggestTags.slice(0, 3));
@@ -56,24 +46,24 @@ export const TagSearchInput = () => {
   );
 };
 
-type ExampleFormData = {
-  nickname: string;
-  gender: string;
+type SearchFormData = {
+  category: string;
+  keyword: string;
 };
 
-class ExampleFormStore extends FormStore<
-  ExampleFormData,
-  keyof ExampleFormData,
+class SearchormStore extends FormStore<
+  SearchFormData,
+  keyof SearchFormData,
   HTMLInputElement | HTMLSelectElement
 > {
   getValues() {
     return {
-      nickname: this.fields.get("nickname")?.value ?? "",
-      gender: this.fields.get("gender")?.value ?? "",
+      category: this.fields.get("category")?.value ?? "",
+      keyword: this.fields.get("keyword")?.value ?? "",
     };
   }
 }
-const { FormProvider, useForm, useField } = createFormStore(ExampleFormStore);
+const { FormProvider, useForm, useField } = createFormStore(SearchormStore);
 
 export const FormStore_ = () => {
   return (
@@ -84,29 +74,51 @@ export const FormStore_ = () => {
 };
 
 const FormStoreInner = () => {
+  const [values, setValues] = useState<SearchFormData | null>(null);
+
   const getValues = useForm();
-  const onSubmit = useCallback(() => {
-    console.log(getValues());
+  const onSearch = useCallback(() => {
+    setValues(getValues());
   }, [getValues]);
 
   const register = useField();
   return (
-    <div className="flex gap-2">
-      <input
-        type="text"
-        className={inputStyle}
-        placeholder="Nickname"
-        ref={register("nickname")}
-      />
-      <select className={inputStyle} ref={register("gender")}>
-        <option value="" disabled selected>
-          Gender
-        </option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="unspecified">Unspecified</option>
-      </select>
-      <button onClick={onSubmit}>Submit</button>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap gap-2">
+        <select
+          className={textInputStyle}
+          defaultValue="all"
+          ref={register("category")}
+        >
+          <option value="all">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="books">Books</option>
+          <option value="clothing">Clothing</option>
+        </select>
+        <input
+          type="text"
+          className={textInputStyle}
+          placeholder="Search products..."
+          ref={register("keyword")}
+        />
+        <button
+          onClick={onSearch}
+          className={clsx(buttonStyle, "flex items-center gap-1")}
+        >
+          <svg
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="7" cy="7" r="5" />
+            <path d="m11 11 4 4" />
+          </svg>
+          Search
+        </button>
+      </div>
+      <span className="break-all">{`values: ${values ? JSON.stringify(values) : ""}`}</span>
     </div>
   );
 };

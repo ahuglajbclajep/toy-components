@@ -6,7 +6,8 @@ export const baseStyle = clsx(
 
 export const textInputStyle = clsx(
   baseStyle,
-  "cursor-text focus-within:border-focus focus-within:outline focus-within:outline-focus",
+  "cursor-text placeholder:text-text-muted",
+  "focus-within:border-focus focus-within:outline focus-within:outline-focus",
 );
 
 export const buttonStyle = clsx(
