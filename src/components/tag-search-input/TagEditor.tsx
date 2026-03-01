@@ -3,7 +3,7 @@ import clsx from "clsx/lite";
 
 import { ColorTag, tagContainerStyle } from "./Tag";
 import { Tag } from "./types";
-import { inputStyle } from "../../utils";
+import { textInputStyle } from "../../utils";
 
 type Props = {
   inputTags: Tag[];
@@ -90,7 +90,7 @@ export const TagEditor = ({
       <div
         onClick={onClickContainer}
         onBlur={onBlur}
-        className={clsx(tagContainerStyle, inputStyle, "p-1")}
+        className={clsx(tagContainerStyle, textInputStyle, "p-1")}
       >
         {!isEditing && !inputTags.length && (
           <span className="h-6 text-base text-text-muted">{placeholder}</span>
@@ -115,7 +115,7 @@ export const TagEditor = ({
           />
         )}
         {isEditing && (
-          <div className="absolute top-full left-0 z-10 w-full">{children}</div>
+          <div className="absolute top-full left-0 w-full">{children}</div>
         )}
       </div>
     </div>

@@ -4,7 +4,7 @@ import clsx from "clsx/lite";
 import { ColorTag, tagContainerStyle } from "./Tag";
 import { narrowDownHelper } from "./TagEditor";
 import { Tag } from "./types";
-import { inputStyle } from "../../utils";
+import { baseStyle } from "../../utils";
 
 type Props = {
   suggestTags: Tag[];
@@ -40,8 +40,9 @@ export const Suggestion = ({
   return (
     <div
       className={clsx(
-        inputStyle,
-        "max-h-[60px] cursor-default! overflow-y-scroll border-t-0 focus-within:outline-0",
+        baseStyle,
+        // mt-px は focus-within:outline の分
+        "mt-px max-h-[60px] cursor-default overflow-y-auto border-t-0",
       )}
     >
       <TagDisplay tags={suggestions} onClickTag={onClickTag} />

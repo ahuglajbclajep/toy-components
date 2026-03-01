@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx/lite";
 
-import { inputStyle } from "../utils";
+import { textInputStyle } from "../utils";
 
 type Props = {
   maxLength?: number;
@@ -34,7 +34,7 @@ export const AutoResizingTextarea = ({ maxLength, className }: Props) => {
       value={content}
       onChange={handleChange}
       className={clsx(
-        inputStyle,
+        textInputStyle,
         "resize-none overflow-y-hidden text-base wrap-break-word",
         className,
       )}

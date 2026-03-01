@@ -17,7 +17,7 @@ export const RecentUserIcons = ({ users }: Props) => {
           // NOTE: -ml-12 と last:ml-0 で、フクロウセレクタと同じことをする（-space-x-12 は厳密にはフクロウセレクタと定義が違うので使えない）
           className={clsx(
             userIconStyle,
-            "z-10 -ml-12 cursor-pointer transition-all last:ml-0 hover:z-20 hover:not-last:-ml-6",
+            "z-10 -ml-9 cursor-pointer transition-all last:ml-0 hover:z-20 hover:not-last:-ml-6",
           )}
           src={user.url}
         />

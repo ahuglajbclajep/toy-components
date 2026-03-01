@@ -1,7 +1,17 @@
 import clsx from "clsx/lite";
 
-export const inputStyle = clsx(
-  "cursor-text rounded-md border border-border bg-bg-white p-2 outline-0 focus-within:outline focus-within:outline-focus",
+export const baseStyle = clsx(
+  "rounded-md border border-border bg-bg-white p-2",
+);
+
+export const textInputStyle = clsx(
+  baseStyle,
+  "cursor-text focus-within:border-focus focus-within:outline focus-within:outline-focus",
+);
+
+export const buttonStyle = clsx(
+  baseStyle,
+  "cursor-pointer transition-colors hover:bg-bg-muted active:bg-bg-emphasis",
 );
 
 export const iconLikeStyle = clsx(
