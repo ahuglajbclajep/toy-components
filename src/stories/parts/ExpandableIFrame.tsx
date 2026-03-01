@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import clsx from "clsx/lite";
 
-import { iconLikeStyle } from "./utils";
+import { iconLikeStyle } from "../../utils";
 
 type Props = {
   src: string;

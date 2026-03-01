@@ -1,4 +1,4 @@
-import { ExpandableIFrame } from "../ExpandableIFrame";
+import { ExpandableIFrame } from "./parts/ExpandableIFrame";
 
 export const BidirectionalEndlessScrolling = () => {
   return (
