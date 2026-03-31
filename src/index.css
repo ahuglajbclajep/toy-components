@@ -12,6 +12,7 @@
   --color-border-muted: var(--color-white);
   --color-focus: var(--color-blue-300);
 
+  --color-danger: var(--color-red-500);
   --color-bg-brand: var(--color-blue-500);
   --color-text-onbrand: var(--color-white);
 }

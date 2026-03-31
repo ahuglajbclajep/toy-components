@@ -17,6 +17,12 @@ class SearchormStore extends FormStoreBase<
   keyof SearchFormData,
   HTMLInputElement | HTMLSelectElement
 > {
+  validate() {
+    return {
+      keyword: !this.fields.get("keyword")?.value && "Keyword is required.",
+    };
+  }
+
   getValues() {
     return {
       category: this.fields.get("category")?.value ?? "",
@@ -37,32 +43,43 @@ export const FormStore = () => {
 const FormStoreInner = () => {
   const [values, setValues] = useState<SearchFormData | null>(null);
 
-  const getValues = useForm();
+  const { trigger, getValues } = useForm();
   const onSearch = useCallback(() => {
-    setValues(getValues());
+    if (trigger()) {
+      setValues(getValues());
+    }
   }, [getValues]);
 
-  const register = useField();
+  const [categoryRef] = useField("category");
+  const [keywordRef, keywordError, setKeywordError] = useField("keyword");
+  const onChangeKeyword = useCallback(() => {
+    if (!keywordError) {
+      return;
+    }
+    setKeywordError(false);
+  }, [keywordError, setKeywordError]);
+
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap gap-2">
-        <select
-          className={textInputStyle}
-          defaultValue="all"
-          ref={register("category")}
-        >
+      <div className="flex flex-wrap items-start gap-2">
+        <select className={textInputStyle} defaultValue="all" ref={categoryRef}>
           <option value="all">All Categories</option>
           <option value="electronics">Electronics</option>
           <option value="books">Books</option>
           <option value="clothing">Clothing</option>
         </select>
-        <input
-          type="text"
-          className={textInputStyle}
-          placeholder="Search products..."
-          ref={register("keyword")}
-        />
+        <div className="flex flex-col gap-1">
+          <input
+            type="text"
+            className={textInputStyle}
+            placeholder="Search products..."
+            ref={keywordRef}
+            onChange={onChangeKeyword}
+          />
+          {keywordError && <span className="text-danger">{keywordError}</span>}
+        </div>
         <button
+          disabled={!!keywordError}
           onClick={onSearch}
           className={clsx(buttonStyle, "flex items-center gap-1")}
         >

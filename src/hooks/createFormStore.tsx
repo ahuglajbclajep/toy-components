@@ -1,4 +1,12 @@
-import { createContext, useContext, type RefCallback, useState } from "react";
+import {
+  createContext,
+  useContext,
+  type RefCallback,
+  useState,
+  useSyncExternalStore,
+} from "react";
+
+type ValueOf<T extends Record<PropertyKey, unknown>> = T[keyof T];
 
 export abstract class FormStore<
   Data,
@@ -6,7 +14,6 @@ export abstract class FormStore<
   FieldElement extends HTMLElement,
 > {
   protected fields = new Map<FieldName, FieldElement>();
-
   register =
     (name: FieldName): RefCallback<FieldElement> =>
     (instance) => {
@@ -15,6 +22,27 @@ export abstract class FormStore<
       return () => void this.fields.delete(name);
     };
 
+  private listeners = new Set<() => void>();
+  subscribe = (listener: () => void) => {
+    this.listeners.add(listener);
+    return () => void this.listeners.delete(listener);
+  };
+
+  // Map でも書けるが、validate() がオブジェクトを返す設計なのでこの方がシンプル
+  // |false は !this.fields.get("name")?.value && "msg" と書けるようにするため
+  errorMessages: Partial<Record<FieldName, string | false>> = {};
+  trigger = (): boolean => {
+    this.errorMessages = this.validate();
+    this.listeners.forEach((listener) => listener());
+    // エラーメッセージが空文字の場合も valid とみなす
+    return !Object.values(this.errorMessages).some(Boolean);
+  };
+  setError = (name: FieldName, message: ValueOf<typeof this.errorMessages>) => {
+    this.errorMessages[name] = message;
+    this.listeners.forEach((listener) => listener());
+  };
+
+  abstract validate(): typeof this.errorMessages;
   abstract getValues(): Data;
 }
 
@@ -51,12 +79,19 @@ export const createFormStore = <
 
   const useForm = () => {
     const store = useStore();
-    return () => store.getValues();
+    return { trigger: store.trigger, getValues: () => store.getValues() };
   };
 
-  const useField = () => {
+  const useField = (name: Name) => {
     const store = useStore();
-    return store.register;
+    const errorMessage = useSyncExternalStore(
+      store.subscribe,
+      () => store.errorMessages[name],
+      () => store.errorMessages[name],
+    );
+    const setErrorMessage = (message: Parameters<typeof store.setError>[1]) =>
+      store.setError(name, message);
+    return [store.register(name), errorMessage, setErrorMessage] as const;
   };
 
   return { FormProvider, useForm, useField };
