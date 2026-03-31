@@ -6,16 +6,17 @@ import {
   useSyncExternalStore,
 } from "react";
 
-type ValueOf<T extends Record<PropertyKey, unknown>> = T[keyof T];
+type FieldName<DefaultValues> = string & keyof DefaultValues;
 
 export abstract class FormStore<
-  Data,
-  FieldName extends string,
+  DefaultValues extends Record<string, unknown>,
   FieldElement extends HTMLElement,
+  IncomingValues,
+  OutgoingValues,
 > {
-  protected fields = new Map<FieldName, FieldElement>();
+  protected fields = new Map<FieldName<DefaultValues>, FieldElement>();
   register =
-    (name: FieldName): RefCallback<FieldElement> =>
+    (name: FieldName<DefaultValues>): RefCallback<FieldElement> =>
     (instance) => {
       instance && this.fields.set(name, instance);
       // ref callback の cleanup で、アンマウント時にフィールドをリセットする
@@ -30,20 +31,25 @@ export abstract class FormStore<
 
   // Map でも書けるが、validate() がオブジェクトを返す設計なのでこの方がシンプル
   // |false は !this.fields.get("name")?.value && "msg" と書けるようにするため
-  errorMessages: Partial<Record<FieldName, string | false>> = {};
+  errorMessages: Partial<Record<FieldName<DefaultValues>, string | false>> = {};
   trigger = (): boolean => {
     this.errorMessages = this.validate();
     this.listeners.forEach((listener) => listener());
     // エラーメッセージが空文字の場合も valid とみなす
     return !Object.values(this.errorMessages).some(Boolean);
   };
-  setError = (name: FieldName, message: ValueOf<typeof this.errorMessages>) => {
+  setError = (
+    name: FieldName<DefaultValues>,
+    message: (typeof this.errorMessages)[FieldName<DefaultValues>],
+  ) => {
     this.errorMessages[name] = message;
     this.listeners.forEach((listener) => listener());
   };
 
+  constructor(protected incoming?: IncomingValues) {}
+  abstract defaultValues: DefaultValues;
   abstract validate(): typeof this.errorMessages;
-  abstract getValues(): Data;
+  abstract getValues(): OutgoingValues;
 }
 
 /**
@@ -52,20 +58,32 @@ export abstract class FormStore<
  * const { FormProvider, useField, useForm } = createFormStore(MyFormStore);
  */
 export const createFormStore = <
-  Data,
-  Name extends string,
-  Element extends HTMLElement,
+  DefaultValues extends Record<string, unknown>,
+  FieldElement extends HTMLElement,
+  IncomingValues,
+  OutgoingValues,
 >(
   // SSR 環境で1つのインスタンスを共有することになるのを防ぐため、コンストラクタを受け取る
-  formStoreClass: new () => FormStore<Data, Name, Element>,
+  formStoreClass: new (
+    incoming?: IncomingValues,
+  ) => FormStore<DefaultValues, FieldElement, IncomingValues, OutgoingValues>,
 ) => {
-  const FormContext = createContext<FormStore<Data, Name, Element> | null>(
-    null,
-  );
+  const FormContext = createContext<FormStore<
+    DefaultValues,
+    FieldElement,
+    IncomingValues,
+    OutgoingValues
+  > | null>(null);
 
-  const FormProvider = ({ children }: { children: React.ReactNode }) => {
+  const FormProvider = ({
+    children,
+    incoming,
+  }: {
+    children: React.ReactNode;
+    incoming?: IncomingValues;
+  }) => {
     // useMemo でも動くが、永続化される保証がないので useState を使う
-    const [formStore] = useState(() => new formStoreClass());
+    const [formStore] = useState(() => new formStoreClass(incoming));
     return <FormContext value={formStore}>{children}</FormContext>;
   };
 
@@ -82,7 +100,7 @@ export const createFormStore = <
     return { trigger: store.trigger, getValues: () => store.getValues() };
   };
 
-  const useField = (name: Name) => {
+  const useField = <Name extends FieldName<DefaultValues>>(name: Name) => {
     const store = useStore();
     const errorMessage = useSyncExternalStore(
       store.subscribe,
@@ -91,7 +109,12 @@ export const createFormStore = <
     );
     const setErrorMessage = (message: Parameters<typeof store.setError>[1]) =>
       store.setError(name, message);
-    return [store.register(name), errorMessage, setErrorMessage] as const;
+    return [
+      store.register(name),
+      store.defaultValues[name],
+      errorMessage,
+      setErrorMessage,
+    ] as const;
   };
 
   return { FormProvider, useForm, useField };
