@@ -7,16 +7,27 @@ import {
 } from "../../hooks/createFormStore";
 import { textInputStyle, buttonStyle } from "../../utils";
 
-type SearchFormData = {
-  category: string;
+type Category = "all" | "electronics" | "books" | "clothing";
+type DefaultValuesFromExistingData = {
+  category: Category;
+};
+
+type SubmitValues = {
+  category: Category;
   keyword: string;
 };
 
 class SearchormStore extends FormStoreBase<
-  SearchFormData,
-  keyof SearchFormData,
-  HTMLInputElement | HTMLSelectElement
+  SubmitValues,
+  HTMLInputElement | HTMLSelectElement,
+  DefaultValuesFromExistingData,
+  SubmitValues
 > {
+  defaultValues = {
+    category: this.incoming?.category ?? "all",
+    keyword: "",
+  };
+
   validate() {
     return {
       keyword: !this.fields.get("keyword")?.value && "Keyword is required.",
@@ -25,7 +36,7 @@ class SearchormStore extends FormStoreBase<
 
   getValues() {
     return {
-      category: this.fields.get("category")?.value ?? "",
+      category: (this.fields.get("category")?.value as Category) ?? "all",
       keyword: this.fields.get("keyword")?.value ?? "",
     };
   }
@@ -34,14 +45,14 @@ const { FormProvider, useForm, useField } = createFormStore(SearchormStore);
 
 export const FormStore = () => {
   return (
-    <FormProvider>
+    <FormProvider incoming={{ category: "all" }}>
       <FormStoreInner />
     </FormProvider>
   );
 };
 
 const FormStoreInner = () => {
-  const [values, setValues] = useState<SearchFormData | null>(null);
+  const [values, setValues] = useState<SubmitValues | null>(null);
 
   const { trigger, getValues } = useForm();
   const onSearch = useCallback(() => {
@@ -50,8 +61,8 @@ const FormStoreInner = () => {
     }
   }, [getValues]);
 
-  const [categoryRef] = useField("category");
-  const [keywordRef, keywordError, setKeywordError] = useField("keyword");
+  const [categoryRef, defaultCategory] = useField("category");
+  const [keywordRef, , keywordError, setKeywordError] = useField("keyword");
   const onChangeKeyword = useCallback(() => {
     if (!keywordError) {
       return;
@@ -62,7 +73,11 @@ const FormStoreInner = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-start gap-2">
-        <select className={textInputStyle} defaultValue="all" ref={categoryRef}>
+        <select
+          className={textInputStyle}
+          ref={categoryRef}
+          defaultValue={defaultCategory}
+        >
           <option value="all">All Categories</option>
           <option value="electronics">Electronics</option>
           <option value="books">Books</option>
