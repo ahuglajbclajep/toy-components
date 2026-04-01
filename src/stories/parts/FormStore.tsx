@@ -19,7 +19,6 @@ type SubmitValues = {
 
 class SearchormStore extends FormStoreBase<
   SubmitValues,
-  HTMLInputElement | HTMLSelectElement,
   DefaultValuesFromExistingData,
   SubmitValues
 > {
@@ -90,6 +89,7 @@ const FormStoreInner = () => {
             placeholder="Search products..."
             ref={keywordRef}
             onChange={onChangeKeyword}
+            aria-invalid={!!keywordError}
           />
           {keywordError && <span className="text-danger">{keywordError}</span>}
         </div>

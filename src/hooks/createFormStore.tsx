@@ -7,10 +7,16 @@ import {
 } from "react";
 
 type FieldName<DefaultValues> = string & keyof DefaultValues;
+// DefaultValues の型を、FieldName に対して FieldElement も指定するよう変える方針もあるが、困ってないので今はこれで
+type FieldElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
+/**
+ * @template DefaultValues - フォームの状態
+ * @template IncomingValues - 外部から渡されるデータ。defaultValues で DefaultValues に変換できる
+ * @template OutgoingValues - 外部に渡すデータ
+ */
 export abstract class FormStore<
   DefaultValues extends Record<string, unknown>,
-  FieldElement extends HTMLElement,
   IncomingValues,
   OutgoingValues,
 > {
@@ -32,9 +38,13 @@ export abstract class FormStore<
   // Map でも書けるが、validate() がオブジェクトを返す設計なのでこの方がシンプル
   // |false は !this.fields.get("name")?.value && "msg" と書けるようにするため
   errorMessages: Partial<Record<FieldName<DefaultValues>, string | false>> = {};
-  trigger = (): boolean => {
-    this.errorMessages = this.validate();
-    this.listeners.forEach((listener) => listener());
+  trigger = (options: { noMessages?: boolean } = {}): boolean => {
+    const { noMessages = false } = options;
+    const errorMessages = this.validate();
+    if (!noMessages) {
+      this.errorMessages = errorMessages;
+      this.listeners.forEach((listener) => listener());
+    }
     // エラーメッセージが空文字の場合も valid とみなす
     return !Object.values(this.errorMessages).some(Boolean);
   };
@@ -56,21 +66,32 @@ export abstract class FormStore<
  * @example
  * class MyFormStore extends FormStore<...> { ... }
  * const { FormProvider, useField, useForm } = createFormStore(MyFormStore);
+ *
+ * const App = () => <FormProvider><Component /></FormProvider>;
+ * const Component = () => {
+ *   const { trigger, getValues } = useForm();
+ *   const handleSubmit = () => {
+ *     if (trigger()) {
+ *       console.log(getValues());
+ *     }
+ *   };
+ *
+ *   const [nameRef, , nameError] = useField("name");
+ *   return <><input ref={nameRef} />{nameError && <p>{nameError}</p>}</>;
+ * };
  */
 export const createFormStore = <
   DefaultValues extends Record<string, unknown>,
-  FieldElement extends HTMLElement,
   IncomingValues,
   OutgoingValues,
 >(
   // SSR 環境で1つのインスタンスを共有することになるのを防ぐため、コンストラクタを受け取る
   formStoreClass: new (
     incoming?: IncomingValues,
-  ) => FormStore<DefaultValues, FieldElement, IncomingValues, OutgoingValues>,
+  ) => FormStore<DefaultValues, IncomingValues, OutgoingValues>,
 ) => {
   const FormContext = createContext<FormStore<
     DefaultValues,
-    FieldElement,
     IncomingValues,
     OutgoingValues
   > | null>(null);
