@@ -1,0 +1,1 @@
+import{r as t}from"./index-CBGKgfcR.js";const n=(s=!1)=>{const[a,e]=t.useState(s),o=t.useCallback(()=>e(!0),[]),l=t.useCallback(()=>e(!1),[]),r=t.useCallback(()=>e(c=>!c),[]);return[a,o,l,r]};export{n as u};
